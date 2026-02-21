@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users Management</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #0f172a; /* Dark Navy */
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+
+        /* 🔹 Navbar - Dark with Cyan accent */
+        .navbar-custom {
+            background: #1e293b;
+            border-bottom: 3px solid #06b6d4; /* Cyan */
+            padding: 15px 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #f8fafc !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-brand i {
+            color: #06b6d4; /* Cyan */
+            font-size: 1.8rem;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 2px solid #06b6d4;
+            color: #06b6d4 !important;
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            background: #06b6d4;
+            color: #0f172a !important;
+            transform: translateY(-2px);
+        }
+
+        /* 🔹 Main Card - Dark theme */
+        .main-card {
+            background: #1e293b;
+            border-radius: 16px;
+            border: 1px solid #334155;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+
+        .card-header-custom {
+            background: linear-gradient(135deg, #0369a1 0%, #06b6d4 100%); /* Blue to Cyan */
+            color: white;
+            padding: 30px;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-add {
+            background: #10b981; /* Emerald Green */
+            border: none;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .btn-add:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+            color: white;
+        }
+
+        /* 🔹 Stats Bar */
+        .stats-bar {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-item {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid #334155;
+            flex: 1;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon.users {
+            background: #0369a1; /* Blue */
+            color: white;
+        }
+
+        .stat-icon.admins {
+            background: #7c3aed; /* Violet */
+            color: white;
+        }
+
+        .stat-info h4 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+
+        .stat-info small {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        /* 🔹 Search & Filter */
+        .search-filter {
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #334155;
+        }
+
+        .search-input {
+            background: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 8px;
+            padding: 12px 25px;
+            padding-left: 50px;
+            font-size: 0.95rem;
+            color: #f8fafc;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background: #1e293b;
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+            color: #f8fafc;
+        }
+
+        .search-wrapper {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #06b6d4;
+            font-size: 1.1rem;
+        }
+
+        /* 🔹 Table */
+        .table-container {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #334155;
+        }
+
+        .table {
+            margin: 0;
+            color: #f8fafc;
+        }
+
+        .table thead th {
+            background: #0f172a; /* Dark */
+            color: #06b6d4; /* Cyan */
+            font-weight: 600;
+            padding: 18px;
+            border-bottom: 2px solid #06b6d4;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table tbody td {
+            padding: 20px 18px;
+            vertical-align: middle;
+            border-bottom: 1px solid #334155;
+            background: #1e293b;
+        }
+
+        .table tbody tr:hover td {
+            background: #252f47;
+        }
+
+        /* 🔹 User Avatar */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #0369a1 0%, #06b6d4 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .user-details h6 {
+            margin: 0;
+            font-weight: 600;
+            color: #f8fafc;
+        }
+
+        .user-details small {
+            color: #94a3b8;
+        }
+
+        /* 🔹 Badges */
+        .badge-custom {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-admin {
+            background: #7c3aed; /* Violet */
+            color: white;
+        }
+
+        .badge-user {
+            background: #06b6d4; /* Cyan */
+            color: #0f172a;
+        }
+
+        /* 🔹 Action Buttons */
+        .btn-action {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            transition: all 0.3s ease;
+            margin: 0 3px;
+        }
+
+        .btn-edit {
+            background: #f59e0b; /* Amber */
+            color: #0f172a;
+        }
+
+        .btn-delete {
+            background: #ef4444; /* Red */
+            color: white;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* 🔹 Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state i {
+            font-size: 5rem;
+            color: #334155;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h4 {
+            color: #f8fafc;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 🔹 Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <i class="bi bi-shield-lock-fill"></i>
+            User Management
+        </a>
+        <div class="d-flex gap-2">
+            <a th:href="@{/TeacherList}" class="nav-btn">
+                <i class="bi bi-person-workspace"></i>
+                Professeurs
+            </a>
+            <a th:href="@{/Login}" class="nav-btn">
+                <i class="bi bi-box-arrow-right"></i>
+                Logout
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- 🔹 Main Content -->
+<div class="container mt-4">
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-icon users">
+                <i class="bi bi-people-fill"></i>
+            </div>
+            <div class="stat-info">
+                <h4 th:text="${#lists.size(UserList)}">0</h4>
+                <small>Total Users</small>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon admins">
+                <i class="bi bi-person-badge-fill"></i>
+            </div>
+            <div class="stat-info">
+                <h4 th:text="${#lists.size(UserList.?[type_user == 'Admin'])}">0</h4>
+                <small>Admins</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Card -->
+    <div class="card main-card">
+
+        <!-- Card Header -->
+        <div class="card-header-custom">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="page-title">
+                    <i class="bi bi-list-ul"></i>
+                    Users List
+                </h3>
+                <a th:href="@{/UserAdd}" class="btn-add">
+                    <i class="bi bi-plus-circle-fill"></i>
+                    Ajouter User
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+
+            <!-- Search & Filter -->
+            <div class="search-filter">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="search-wrapper">
+                            <i class="bi bi-search search-icon"></i>
+                            <input type="text" class="form-control search-input" 
+                                   id="searchInput" placeholder="Rechercher par nom...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-container">
+                <table class="table table-hover" id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>Utilisateur</th>
+                            <th>Type</th>
+                            <th>Date Création</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="user : ${UserList}" th:data-nom="${user.nom}">
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar">
+                                        <span th:text="${#strings.substring(user.prenom, 0, 1)} + ${#strings.substring(user.nom, 0, 1)}">AB</span>
+                                    </div>
+                                    <div class="user-details">
+                                        <h6 th:text="${user.nom} + ' ' + ${user.prenom}">Nom Prénom</h6>
+                                        <small>ID: <span th:text="${user.id}">1</span></small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge-custom" 
+                                      th:classappend="${user.type_user == 'Admin'} ? 'badge-admin' : 'badge-user'"
+                                      th:text="${user.type_user}">
+                                    Admin
+                                </span>
+                            </td>
+                            <td>
+                                <i class="bi bi-calendar3 text-muted me-2"></i>
+                                <span th:text="${#dates.format(user.date_creation, 'dd MMM yyyy')}">Date</span>
+                            </td>
+                            <td class="text-center">
+                                <a th:href="@{/UserList/UserEdit/{id}(id=${user.id})}" 
+                                   class="btn-action btn-edit" title="Modifier">
+                                    <i class="bi bi-pencil-fill"></i>
+                                </a>
+                                <a th:href="@{/UserList/delete/{id}(id=${user.id})}" 
+                                   class="btn-action btn-delete" title="Supprimer"
+                                   onclick="return confirm('Supprimer cet utilisateur ?')">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Empty State -->
+            <div th:if="${#lists.isEmpty(UserList)}" class="empty-state">
+                <i class="bi bi-inbox"></i>
+                <h4>Aucun utilisateur trouvé</h4>
+                <p>Commencez par ajouter un nouvel utilisateur</p>
+                <a th:href="@{/UserAdd}" class="btn btn-add mt-2">
+                    <i class="bi bi-plus-circle me-2"></i>Ajouter
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Search Script -->
+<script>
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        var filter = this.value.toLowerCase();
+        var rows = document.querySelectorAll('#usersTable tbody tr');
+        
+        rows.forEach(function(row) {
+            var nom = row.getAttribute('data-nom').toLowerCase();
+            row.style.display = nom.indexOf(filter) > -1 ? '' : 'none';
+        });
+    });
+</script>
+
+</body>
+</html>

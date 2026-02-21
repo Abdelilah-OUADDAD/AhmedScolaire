@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Nunito', sans-serif;
+        }
+
+        /* ============================================
+           OPEN COLORS PALETTE
+           ============================================ */
+        :root {
+            --oc-white: #ffffff;
+            --oc-gray-0: #f8f9fa;
+            --oc-gray-1: #f1f3f5;
+            --oc-gray-2: #e9ecef;
+            --oc-gray-3: #dee2e6;
+            --oc-gray-4: #ced4da;
+            --oc-gray-5: #adb5bd;
+            --oc-gray-6: #868e96;
+            --oc-gray-7: #495057;
+            --oc-gray-8: #343a40;
+            --oc-gray-9: #212529;
+            
+            --oc-red-0: #fff5f5;
+            --oc-red-1: #ffe3e3;
+            --oc-red-2: #ffc9c9;
+            --oc-red-3: #ffa8a8;
+            --oc-red-4: #ff8787;
+            --oc-red-5: #ff6b6b;
+            --oc-red-6: #fa5252;
+            --oc-red-7: #f03e3e;
+            --oc-red-8: #e03131;
+            --oc-red-9: #c92a2a;
+            
+            --oc-pink-0: #fff0f6;
+            --oc-pink-1: #ffdeeb;
+            --oc-pink-2: #fcc2d7;
+            --oc-pink-3: #faa2c1;
+            --oc-pink-4: #f783ac;
+            --oc-pink-5: #f06595;
+            --oc-pink-6: #e64980;
+            --oc-pink-7: #d6336c;
+            --oc-pink-8: #c2255c;
+            --oc-pink-9: #a61e4d;
+            
+            --oc-grape-0: #f8f0fc;
+            --oc-grape-1: #f3d9fa;
+            --oc-grape-2: #eebefa;
+            --oc-grape-3: #e599f7;
+            --oc-grape-4: #da77f2;
+            --oc-grape-5: #cc5de8;
+            --oc-grape-6: #be4bdb;
+            --oc-grape-7: #ae3ec9;
+            --oc-grape-8: #9c36b5;
+            --oc-grape-9: #862e9c;
+            
+            --oc-violet-0: #f3f0ff;
+            --oc-violet-1: #e5dbff;
+            --oc-violet-2: #d0bfff;
+            --oc-violet-3: #b197fc;
+            --oc-violet-4: #9775fa;
+            --oc-violet-5: #845ef7;
+            --oc-violet-6: #7950f2;
+            --oc-violet-7: #7048e8;
+            --oc-violet-8: #6741d9;
+            --oc-violet-9: #5f3dc4;
+            
+            --oc-indigo-0: #edf2ff;
+            --oc-indigo-1: #dbe4ff;
+            --oc-indigo-2: #bac8ff;
+            --oc-indigo-3: #91a7ff;
+            --oc-indigo-4: #748ffc;
+            --oc-indigo-5: #5c7cfa;
+            --oc-indigo-6: #4c6ef5;
+            --oc-indigo-7: #4263eb;
+            --oc-indigo-8: #3b5bdb;
+            --oc-indigo-9: #364fc7;
+            
+            --oc-blue-0: #e7f5ff;
+            --oc-blue-1: #d0ebff;
+            --oc-blue-2: #a5d8ff;
+            --oc-blue-3: #74c0fc;
+            --oc-blue-4: #4dabf7;
+            --oc-blue-5: #339af0;
+            --oc-blue-6: #228be6;
+            --oc-blue-7: #1c7ed6;
+            --oc-blue-8: #1971c2;
+            --oc-blue-9: #1864ab;
+            
+            --oc-cyan-0: #e3fafc;
+            --oc-cyan-1: #c5f6fa;
+            --oc-cyan-2: #99e9f2;
+            --oc-cyan-3: #66d9e8;
+            --oc-cyan-4: #3bc9db;
+            --oc-cyan-5: #22b8cf;
+            --oc-cyan-6: #15aabf;
+            --oc-cyan-7: #1098ad;
+            --oc-cyan-8: #0c8599;
+            --oc-cyan-9: #0b7285;
+            
+            --oc-teal-0: #e6fcf5;
+            --oc-teal-1: #c3fae8;
+            --oc-teal-2: #96f2d7;
+            --oc-teal-3: #63e6be;
+            --oc-teal-4: #38d9a9;
+            --oc-teal-5: #20c997;
+            --oc-teal-6: #12b886;
+            --oc-teal-7: #0ca678;
+            --oc-teal-8: #099268;
+            --oc-teal-9: #087f5b;
+            
+            --oc-green-0: #ebfbee;
+            --oc-green-1: #d3f9d8;
+            --oc-green-2: #b2f2bb;
+            --oc-green-3: #8ce99a;
+            --oc-green-4: #69db7c;
+            --oc-green-5: #51cf66;
+            --oc-green-6: #40c057;
+            --oc-green-7: #37b24d;
+            --oc-green-8: #2f9e44;
+            --oc-green-9: #2b8a3e;
+            
+            --oc-yellow-0: #fff9db;
+            --oc-yellow-1: #fff3bf;
+            --oc-yellow-2: #ffec99;
+            --oc-yellow-3: #ffe066;
+            --oc-yellow-4: #ffd43b;
+            --oc-yellow-5: #fcc419;
+            --oc-yellow-6: #fab005;
+            --oc-yellow-7: #f59f00;
+            --oc-yellow-8: #f08c00;
+            --oc-yellow-9: #e67700;
+            
+            --oc-orange-0: #fff4e6;
+            --oc-orange-1: #ffe8cc;
+            --oc-orange-2: #ffd8a8;
+            --oc-orange-3: #ffc078;
+            --oc-orange-4: #ffa94d;
+            --oc-orange-5: #ff922b;
+            --oc-orange-6: #fd7e14;
+            --oc-orange-7: #f76707;
+            --oc-orange-8: #e8590c;
+            --oc-orange-9: #d9480f;
+        }
+
+        /* ============================================
+           STYLES
+           ============================================ */
+        
+        body {
+            background: var(--oc-gray-1);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        /* 🔹 Main Card */
+        .main-card {
+            background: var(--oc-white);
+            border-radius: 24px;
+            border: none;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.12);
+            overflow: hidden;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card-header-custom {
+            background: linear-gradient(135deg, var(--oc-violet-6) 0%, var(--oc-pink-5) 100%);
+            color: var(--oc-white);
+            padding: 35px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .card-header-custom::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .header-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-body-custom {
+            padding: 40px;
+        }
+
+        /* 🔹 Form Styles */
+        .form-label {
+            font-weight: 700;
+            color: var(--oc-gray-8);
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-label i {
+            color: var(--oc-violet-5);
+        }
+
+        .form-control, .form-select {
+            border: 3px solid var(--oc-gray-2);
+            border-radius: 14px;
+            padding: 14px 18px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--oc-gray-8);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--oc-violet-4);
+            box-shadow: 0 0 0 4px rgba(132, 94, 247, 0.1);
+            outline: none;
+        }
+
+        .form-control.is-invalid {
+            border-color: var(--oc-red-5);
+            background-color: var(--oc-red-0);
+        }
+
+        .invalid-feedback {
+            color: var(--oc-red-6);
+            font-weight: 600;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* 🔹 Input Group (Password) */
+        .input-group .form-control {
+            border-right: none;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .input-group .btn-toggle {
+            border: 3px solid var(--oc-gray-2);
+            border-left: none;
+            border-radius: 0 14px 14px 0;
+            background: var(--oc-white);
+            color: var(--oc-violet-5);
+            padding: 0 18px;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group .btn-toggle:hover {
+            background: var(--oc-violet-0);
+            color: var(--oc-violet-7);
+        }
+
+        /* 🔹 Select Dropdown */
+        .form-select {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23845ef7' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+        }
+
+        /* 🔹 Alert Messages */
+        .alert-custom {
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            border: none;
+        }
+
+        .alert-error {
+            background: var(--oc-red-1);
+            color: var(--oc-red-8);
+        }
+
+        .alert-success {
+            background: var(--oc-green-1);
+            color: var(--oc-green-8);
+        }
+
+        /* 🔹 Buttons */
+        .btn-group-custom {
+            display: flex;
+            gap: 15px;
+            margin-top: 35px;
+        }
+
+        .btn-custom {
+            flex: 1;
+            padding: 16px 30px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-cancel {
+            background: var(--oc-gray-2);
+            color: var(--oc-gray-7);
+        }
+
+        .btn-cancel:hover {
+            background: var(--oc-gray-3);
+            color: var(--oc-gray-8);
+            transform: translateY(-2px);
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, var(--oc-green-5) 0%, var(--oc-teal-5) 100%);
+            color: var(--oc-white);
+            box-shadow: 0 10px 30px rgba(64, 192, 87, 0.3);
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(64, 192, 87, 0.4);
+        }
+
+        /* 🔹 Password Error */
+        .password-error {
+            color: var(--oc-red-6);
+            font-weight: 600;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* 🔹 Animations */
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeInUp 0.6s ease;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container animate-fade-in">
+    <div class="card main-card">
+
+        <!-- Card Header -->
+        <div class="card-header-custom">
+            <div class="header-icon">
+                <i class="bi bi-person-gear"></i>
+            </div>
+            <h3 class="page-title">Mettre à jour le profil</h3>
+        </div>
+
+        <div class="card-body-custom">
+
+            <!-- Alert Messages -->
+            <div th:if="${error}" class="alert-custom alert-error">
+                <i class="bi bi-exclamation-circle-fill"></i>
+                <span th:text="${error}"></span>
+            </div>
+            
+            <div th:if="${success}" class="alert-custom alert-success">
+                <i class="bi bi-check-circle-fill"></i>
+                <span th:text="${success}"></span>
+            </div>
+
+            <form th:action="@{/UserList/UserEdit}" method="post" th:object="${userEdit}" onsubmit="return validatePasswords()">
+
+                <!-- Hidden ID -->
+                <input type="hidden" th:field="*{id}" />
+
+                <!-- Nom -->
+                <div class="mb-4">
+                    <label class="form-label">
+                        <i class="bi bi-person-fill"></i>
+                        Nom
+                    </label>
+                    <input type="text" class="form-control" th:field="*{nom}" 
+                           th:classappend="${#fields.hasErrors('nom')} ? 'is-invalid' : ''" required>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('nom)}" th:errors="*{nom}">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <span th:errors="*{nom}"></span>
+                    </div>
+                </div>
+
+                <!-- Prenom -->
+                <div class="mb-4">
+                    <label class="form-label">
+                        <i class="bi bi-person-fill"></i>
+                        Prénom
+                    </label>
+                    <input type="text" class="form-control" th:field="*{prenom}" 
+                           th:classappend="${#fields.hasErrors('prenom')} ? 'is-invalid' : ''" required>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('prenom)}" th:errors="*{prenom}">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <span th:errors="*{prenom}"></span>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-4">
+                    <label class="form-label">
+                        <i class="bi bi-envelope-fill"></i>
+                        Email
+                    </label>
+                    <input type="email" class="form-control" th:field="*{email}" 
+                           th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''" required>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('email)}" th:errors="*{email}">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <span th:errors="*{email}"></span>
+                    </div>
+                </div>
+
+                <!-- Type User -->
+                <div class="mb-4">
+                    <label class="form-label">
+                        <i class="bi bi-shield-fill"></i>
+                        Type User
+                    </label>
+                    <select class="form-select" th:field="*{type_user}">
+                        <option value="Admin">👑 Admin</option>
+                        <option value="Student">🎓 Student</option>
+                        <option value="Pedagogie">📚 Pedagogie</option>
+                    </select>
+                </div>
+
+                <!-- Old Password -->
+                <div class="mb-4">
+                    <label class="form-label">
+                        <i class="bi bi-lock-fill"></i>
+                        Ancien mot de passe
+                    </label>
+                    <div class="input-group">
+                        <input type="password" class="form-control password-field" name="oldPassword" required>
+                        <button type="button" class="btn btn-toggle password-toggle">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- New Password -->
+                <div class="mb-4">
+                    <label class="form-label">
+                        <i class="bi bi-lock-fill"></i>
+                        Nouveau mot de passe
+                    </label>
+                    <div class="input-group">
+                        <input type="password" id="newPassword" class="form-control password-field" 
+                               name="newPassword" th:field="*{password}" required>
+                        <button type="button" class="btn btn-toggle password-toggle">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <span th:errors="*{password}"></span>
+                    </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="mb-4">
+                    <label class="form-label">
+                        <i class="bi bi-lock-fill"></i>
+                        Confirmer le mot de passe
+                    </label>
+                    <div class="input-group">
+                        <input type="password" id="confirmPassword" class="form-control password-field" 
+                               name="confirmPassword">
+                        <button type="button" class="btn btn-toggle password-toggle">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                    <small id="passwordError" class="password-error"></small>
+                </div>
+
+                <!-- Buttons -->
+                <div class="btn-group-custom">
+                    <a th:href="@{/UserList}" class="btn-custom btn-cancel">
+                        <i class="bi bi-x-circle-fill"></i>
+                        Annuler
+                    </a>
+                    <button type="submit" class="btn-custom btn-save">
+                        <i class="bi bi-check-circle-fill"></i>
+                        Enregistrer
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Show/Hide password
+    document.querySelectorAll('.password-toggle').forEach(function(button) {
+        button.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('.password-field');
+            const icon = this.querySelector('i');
+            
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                input.type = "password";
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
+    });
+
+    // Password validation
+    function validatePasswords() {
+        let newPass = document.getElementById("newPassword").value;
+        let confirmPass = document.getElementById("confirmPassword").value;
+        let errorText = document.getElementById("passwordError");
+
+        if (newPass !== "" && newPass !== confirmPass) {
+            errorText.innerHTML = '<i class="bi bi-exclamation-circle-fill"></i> Les mots de passe ne correspondent pas !';
+            return false;
+        }
+
+        errorText.innerText = "";
+        return true;
+    }
+</script>
+
+</body>
+</html>

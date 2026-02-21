@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .main-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border: none;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border: none;
+            text-align: center;
+        }
+        
+        .teacher-avatar {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .info-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .info-label {
+            color: #667eea;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .info-value {
+            color: #212529;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .section-title {
+            color: #764ba2;
+            font-weight: 700;
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #764ba2;
+            display: inline-block;
+        }
+        
+        .btn-edit {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 30px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-edit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(245, 87, 108, 0.3);
+            color: white;
+        }
+        
+        .btn-back {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 30px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+            color: white;
+        }
+        
+        .badge-id {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                
+                <div class="card main-card">
+                    <!-- Header -->
+                    <div class="card-header">
+                        <div class="teacher-avatar">
+                            <span th:text="${#strings.substring(teacher.prenom, 0, 1)} + ${#strings.substring(teacher.nom, 0, 1)}">JD</span>
+                        </div>
+                        <h2 class="mb-2" th:text="${teacher.nomComplet}">Jean Dupont</h2>
+                        <span class="badge-id">
+                            <i class="bi bi-id-card me-2"></i>Teacher ID: <span th:text="${teacher.teacherId}">1</span>
+                        </span>
+                    </div>
+                    
+                    <div class="card-body p-4 p-md-5">
+                        
+                        <!-- Personal Information -->
+                        <h4 class="section-title"><i class="bi bi-person me-2"></i>Personal Information</h4>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info-card">
+                                    <div class="info-label"><i class="bi bi-person-badge me-2"></i>Last Name</div>
+                                    <div class="info-value" th:text="${teacher.nom}">Dupont</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-card">
+                                    <div class="info-label"><i class="bi bi-person-badge me-2"></i>First Name</div>
+                                    <div class="info-value" th:text="${teacher.prenom}">Jean</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="info-card">
+                            <div class="info-label"><i class="bi bi-geo-alt me-2"></i>Address</div>
+                            <div class="info-value" th:text="${teacher.address}">12 Rue de la Paix, Paris, France</div>
+                        </div>
+                        
+                        <!-- Academic Information -->
+                        <h4 class="section-title"><i class="bi bi-mortarboard me-2"></i>Academic Information</h4>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info-card">
+                                    <div class="info-label"><i class="bi bi-diagram-3 me-2"></i>Specialité ID</div>
+                                    <div class="info-value" th:text="${teacher.specialiteId}">1</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-card">
+                                    <div class="info-label"><i class="bi bi-book me-2"></i>Specialité Name</div>
+                                    <div class="info-value" th:if="${teacher.NomSpecialite}" th:text="${teacher.NomSpecialite}">
+                                        Mathématiques
+                                    </div>
+                                    <div class="info-value text-muted" th:if="${teacher.NomSpecialite == null}">
+                                        <i class="bi bi-question-circle"></i> Not specified
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Description (if available) -->
+                        <div class="info-card" th:if="${teacher.specialiteDescription}">
+                            <div class="info-label"><i class="bi bi-info-circle me-2"></i>Description</div>
+                            <div class="info-value" style="font-size: 1rem; font-weight: normal;" 
+                                 th:text="${teacher.specialiteDescription}">
+                                Enseignement des mathématiques
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="d-flex gap-3 justify-content-center mt-4 pt-4 border-top">
+                            <a th:href="@{/TeacherEdit/{id}(id=${teacher.teacherId})}" class="btn btn-edit text-decoration-none">
+                                <i class="bi bi-pencil-square me-2"></i>Edit Teacher
+                            </a>
+                            <a th:href="@{/TeacherList}" class="btn btn-back text-decoration-none">
+                                <i class="bi bi-arrow-left me-2"></i>Back to List
+                            </a>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

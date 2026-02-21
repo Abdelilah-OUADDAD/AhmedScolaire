@@ -1,0 +1,5 @@
+package com.System.Scolaire.service;
+
+public interface UserServiceInterface {
+
+}
